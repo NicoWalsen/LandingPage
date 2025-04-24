@@ -1151,8 +1151,11 @@ footer {
         font-size: 2rem;
     }
     
-    #hero {
+    #hero, #inicio {
         padding-top: 120px;
+        height: 100vh;
+        background-attachment: scroll;
+        background-position: center;
     }
 }
 
@@ -1167,6 +1170,14 @@ footer {
     
     .section-title {
         font-size: 1.8rem;
+    }
+    
+    #hero, #inicio {
+        height: 100vh;
+        background-size: cover;
+        background-position: center;
+        background-attachment: scroll;
+        background-repeat: no-repeat;
     }
     
     .product-filter {
