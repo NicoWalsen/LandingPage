@@ -361,10 +361,14 @@ nav {
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--box-shadow);
+    max-height: 400px;
 }
 
 .about-image img {
     transition: transform 0.5s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .about-image:hover img {
@@ -1204,14 +1208,20 @@ footer {
         font-size: 1.5rem;
     }
     
-    .about-content,
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
     .contact-container,
     .footer-content {
         flex-direction: column;
     }
     
     .about-image {
-        margin-top: 2rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        max-height: 350px;
     }
     
     .b2b-content {
@@ -1275,6 +1285,12 @@ footer {
         background-attachment: scroll;
         background-position: center;
     }
+    
+    .about-image {
+        max-height: 300px;
+        width: 100%;
+        margin: 0 auto;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -1323,5 +1339,9 @@ footer {
     .modal-content {
         width: 95%;
         margin: 5% auto;
+    }
+    
+    .about-image {
+        max-height: 250px;
     }
 } 
