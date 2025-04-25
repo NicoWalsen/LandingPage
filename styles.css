@@ -1060,6 +1060,116 @@ footer {
     margin-left: 10px;
 }
 
+/* Estilos para la sección B2B */
+.b2b-section {
+    background-color: var(--light-bg);
+    position: relative;
+}
+
+.b2b-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background-image: url('images/Zabuton-MSH.jpg'); /* Usar una imagen apropiada */
+    background-size: cover;
+    background-position: center;
+    opacity: 0.1;
+    z-index: 0;
+}
+
+.b2b-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.b2b-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.b2b-info h3 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+.b2b-info p {
+    margin-bottom: 1.5rem;
+}
+
+.b2b-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 2rem 0;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.benefit-item i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    background-color: rgba(139, 0, 0, 0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.benefit-item h4 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--dark-color);
+}
+
+.benefit-item p {
+    margin-bottom: 0;
+    font-size: 0.95rem;
+}
+
+.b2b-form {
+    flex: 1;
+    min-width: 300px;
+    background-color: white;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.b2b-form h3 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+#b2b-form select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-family: var(--font-body);
+    background-color: white;
+    font-size: 0.95rem;
+}
+
+#b2b-form select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
 /* Animaciones */
 @keyframes navLinkFade {
     from {
@@ -1087,21 +1197,29 @@ footer {
 /* Responsive Design */
 @media screen and (max-width: 1024px) {
     .hero-content h1 {
-        font-size: 3rem;
+        font-size: 3.5rem;
     }
     
     .hero-content h2 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
     
     .about-content,
-    .contact-container {
-        grid-template-columns: 1fr;
-        gap: 3rem;
+    .contact-container,
+    .footer-content {
+        flex-direction: column;
     }
     
     .about-image {
-        order: -1;
+        margin-top: 2rem;
+    }
+    
+    .b2b-content {
+        flex-direction: column;
+    }
+    
+    .b2b-form {
+        margin-top: 2rem;
     }
 }
 
