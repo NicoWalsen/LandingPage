@@ -1,5 +1,8 @@
 // Esperar a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', function() {
+    // Limpiar completamente y reiniciar carrito
+    forceCleanCart();
+    
     // Inicializar el carrito
     initCart();
     
@@ -20,12 +23,37 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Inicializar el modal del carrito
     setupCartModal();
+    
+    // Configurar formulario B2B
+    setupB2BForm();
 });
+
+// Forzar limpieza completa del carrito
+function forceCleanCart() {
+    console.log('Limpieza forzada del carrito');
+    
+    // Eliminar completamente la clave del localStorage
+    localStorage.removeItem('barbigo-cart');
+    
+    // Inicializar con un nuevo array vacío
+    localStorage.setItem('barbigo-cart', JSON.stringify([]));
+    
+    // Adicionalmente, limpiar cualquier otra clave que pueda existir relacionada con el carrito
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.includes('cart')) {
+            localStorage.removeItem(key);
+        }
+    }
+    
+    console.log('Estado del carrito después de limpieza:', localStorage.getItem('barbigo-cart'));
+}
 
 // Función para inicializar el carrito
 function initCart() {
     // Obtener el carrito del localStorage o crear uno nuevo
     let cart = JSON.parse(localStorage.getItem('barbigo-cart')) || [];
+    console.log('Carrito inicial:', cart);
     
     // Actualizar el contador del carrito
     updateCartCount(cart);
@@ -38,40 +66,46 @@ function initCart() {
             e.preventDefault();
             
             const productCard = this.closest('.product-card');
-            const productId = productCard.dataset.id;
+            const productId = productCard.getAttribute('data-id'); // Aseguramos que se obtenga el ID correcto
             const productName = productCard.querySelector('h3').textContent;
             const productPrice = productCard.querySelector('.product-price').textContent;
             const productImage = productCard.querySelector('img').src;
             
+            console.log('Producto a agregar:', { id: productId, name: productName, price: productPrice });
+            
+            // Obtener carrito actualizado (importante para evitar problemas de sincronización)
+            let currentCart = JSON.parse(localStorage.getItem('barbigo-cart')) || [];
+            
             // Comprobar si el producto ya está en el carrito
-            const existingProductIndex = cart.findIndex(item => item.id === productId);
+            const existingProductIndex = currentCart.findIndex(item => item.id === productId);
             
             if (existingProductIndex > -1) {
                 // Incrementar la cantidad si ya existe
-                cart[existingProductIndex].quantity += 1;
+                currentCart[existingProductIndex].quantity += 1;
+                showNotification(`${productName} - cantidad aumentada a ${currentCart[existingProductIndex].quantity}`);
             } else {
                 // Añadir nuevo producto al carrito
-                cart.push({
+                currentCart.push({
                     id: productId,
                     name: productName,
                     price: productPrice,
                     image: productImage,
                     quantity: 1
                 });
+                showNotification(`${productName} añadido al carrito`);
             }
             
+            console.log('Carrito actualizado:', currentCart);
+            
             // Guardar el carrito en localStorage
-            localStorage.setItem('barbigo-cart', JSON.stringify(cart));
+            localStorage.setItem('barbigo-cart', JSON.stringify(currentCart));
             
             // Actualizar el contador del carrito
-            updateCartCount(cart);
-            
-            // Mostrar notificación
-            showNotification(`${productName} añadido al carrito`);
+            updateCartCount(currentCart);
             
             // Actualizar el modal del carrito si está abierto
             if (document.getElementById('cart-modal').style.display === 'block') {
-                displayCartItems(cart);
+                displayCartItems(currentCart);
             }
         });
     });
@@ -141,10 +175,11 @@ function setupProductFilters() {
             this.classList.add('active');
             
             const filter = this.dataset.filter;
+            console.log('Filtro seleccionado:', filter);
             
             // Filtrar productos
             productCards.forEach(card => {
-                if (filter === 'all') {
+                if (filter === 'todos' || filter === 'all') {
                     card.style.display = 'block';
                 } else if (card.dataset.category === filter) {
                     card.style.display = 'block';
@@ -296,6 +331,13 @@ function setupNewsletter() {
     });
 }
 
+// Función para eliminar completamente el carrito
+function clearCart() {
+    // Resetear completamente
+    resetCartCompletely();
+    showNotification('Carrito vaciado completamente', 'success');
+}
+
 // Configurar modal del carrito
 function setupCartModal() {
     const cartIcon = document.querySelector('.cart-icon');
@@ -344,8 +386,7 @@ function setupCartModal() {
             showNotification('¡Gracias por su compra! Procesando pedido...');
             
             // Limpiar carrito
-            localStorage.removeItem('barbigo-cart');
-            updateCartCount([]);
+            clearCart();
             
             // Cerrar modal
             cartModal.style.display = 'none';
@@ -366,15 +407,28 @@ function displayCartItems(cart) {
     
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = '<p class="text-center">Su carrito está vacío</p>';
-        cartTotalElement.textContent = '$0';
+        cartTotalElement.textContent = '$0 CLP';
         return;
     }
+    
+    // Añadir botón para vaciar carrito
+    const clearCartButton = document.createElement('button');
+    clearCartButton.className = 'btn-secondary';
+    clearCartButton.style.marginBottom = '15px';
+    clearCartButton.style.fontSize = '0.8rem';
+    clearCartButton.style.padding = '5px 10px';
+    clearCartButton.textContent = 'Vaciar Carrito';
+    clearCartButton.addEventListener('click', clearCart);
+    cartItemsContainer.appendChild(clearCartButton);
     
     // Calcular total
     let total = 0;
     
     // Añadir cada item al modal
     cart.forEach(item => {
+        // Verificar si hay ID válido, si no, omitir el item
+        if (!item.id) return;
+        
         // Extraer solo el número del precio
         const priceString = item.price.replace(/[^\d]/g, '');
         const price = parseInt(priceString);
@@ -407,8 +461,8 @@ function displayCartItems(cart) {
         cartItemsContainer.appendChild(itemElement);
     });
     
-    // Mostrar total formateado
-    cartTotalElement.textContent = `$${total.toLocaleString()}`;
+    // Mostrar total formateado con formato de moneda chilena
+    cartTotalElement.textContent = `$${total.toLocaleString()} CLP`;
     
     // Configurar botones de cantidad
     setupQuantityButtons();
@@ -447,17 +501,35 @@ function setupQuantityButtons() {
 
 // Actualizar cantidad de item
 function updateItemQuantity(productId, change) {
+    // Obtener el carrito actualizado
     let cart = JSON.parse(localStorage.getItem('barbigo-cart')) || [];
+    console.log('Actualizando cantidad para producto:', productId);
+    console.log('Carrito antes de actualizar:', cart);
     
     const productIndex = cart.findIndex(item => item.id === productId);
+    console.log('Índice del producto:', productIndex);
     
     if (productIndex > -1) {
         cart[productIndex].quantity += change;
         
         // Eliminar item si la cantidad es 0 o menos
         if (cart[productIndex].quantity <= 0) {
+            // Obtener el nombre antes de eliminar
+            const productName = cart[productIndex].name;
+            
+            // Eliminar el producto
             cart.splice(productIndex, 1);
+            console.log('Producto eliminado del carrito');
+            
+            // Mostrar notificación
+            showNotification(`${productName} eliminado del carrito`);
+        } else if (change > 0) {
+            showNotification(`Cantidad aumentada a ${cart[productIndex].quantity}`);
+        } else if (change < 0) {
+            showNotification(`Cantidad reducida a ${cart[productIndex].quantity}`);
         }
+        
+        console.log('Carrito después de actualizar:', cart);
         
         // Guardar cambios
         localStorage.setItem('barbigo-cart', JSON.stringify(cart));
@@ -470,16 +542,54 @@ function updateItemQuantity(productId, change) {
 
 // Eliminar item del carrito
 function removeCartItem(productId) {
+    // Obtener el carrito actualizado
     let cart = JSON.parse(localStorage.getItem('barbigo-cart')) || [];
+    console.log('Eliminando producto:', productId);
+    console.log('Carrito antes de eliminar:', cart);
     
+    // Buscar el producto a eliminar
+    const productToRemove = cart.find(item => item.id === productId);
+    let productName = "";
+    if (productToRemove) {
+        productName = productToRemove.name;
+    }
+    
+    // Filtrar el carrito para mantener solo los items que no coincidan con el ID
     const updatedCart = cart.filter(item => item.id !== productId);
+    console.log('Carrito después de eliminar:', updatedCart);
     
-    // Guardar cambios
+    // Guardar cambios en localStorage
     localStorage.setItem('barbigo-cart', JSON.stringify(updatedCart));
     
     // Actualizar la visualización
     updateCartCount(updatedCart);
     displayCartItems(updatedCart);
+    
+    // Mostrar notificación
+    showNotification(`${productName || 'Producto'} eliminado del carrito`, 'success');
+}
+
+// Función para limpiar completamente la caché del carrito
+function resetCartCompletely() {
+    console.log('Reseteando completamente el carrito');
+    
+    // Eliminar completamente del localStorage
+    localStorage.removeItem('barbigo-cart');
+    
+    // Crear un nuevo carrito vacío
+    localStorage.setItem('barbigo-cart', JSON.stringify([]));
+    
+    // Verificar que se ha limpiado correctamente
+    console.log('Estado del carrito tras reseteo:', localStorage.getItem('barbigo-cart'));
+    
+    // Actualizar contador y visualización
+    updateCartCount([]);
+    
+    // Cerrar el modal si está abierto
+    const cartModal = document.getElementById('cart-modal');
+    if (cartModal && cartModal.style.display === 'block') {
+        displayCartItems([]);
+    }
 }
 
 // Mostrar notificaciones
@@ -605,4 +715,32 @@ style.textContent = `
     }
 `;
 
-document.head.appendChild(style); 
+document.head.appendChild(style);
+
+// Función para configurar el formulario B2B
+function setupB2BForm() {
+    const b2bForm = document.getElementById('b2b-form');
+    
+    if (!b2bForm) return;
+    
+    b2bForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Obtener los valores del formulario
+        const company = document.getElementById('b2b-company').value;
+        const name = document.getElementById('b2b-name').value;
+        const email = document.getElementById('b2b-email').value;
+        const phone = document.getElementById('b2b-phone').value;
+        const type = document.getElementById('b2b-type').value;
+        const message = document.getElementById('b2b-message').value;
+        
+        // Aquí normalmente enviarías los datos al servidor
+        console.log('Solicitud B2B recibida:', { company, name, email, phone, type, message });
+        
+        // Simular envío exitoso
+        showNotification('¡Gracias por tu solicitud! Te contactaremos pronto.', 'success');
+        
+        // Resetear el formulario
+        b2bForm.reset();
+    });
+} 
