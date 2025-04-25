@@ -289,6 +289,7 @@ nav {
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1615937657715-bc7b4b7962c1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80');
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -362,6 +363,7 @@ nav {
     overflow: hidden;
     box-shadow: var(--box-shadow);
     max-height: 400px;
+    position: relative;
 }
 
 .about-image img {
@@ -459,6 +461,7 @@ nav {
     height: 250px;
     position: relative;
     overflow: hidden;
+    background-color: var(--light-bg);
 }
 
 .product-image img {
@@ -1213,15 +1216,19 @@ footer {
         gap: 2rem;
     }
     
-    .contact-container,
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+    
     .footer-content {
-        flex-direction: column;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
     }
     
     .about-image {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-        max-height: 350px;
+        margin: 0 auto;
+        max-height: 450px;
+        width: 100%;
     }
     
     .b2b-content {
@@ -1230,6 +1237,10 @@ footer {
     
     .b2b-form {
         margin-top: 2rem;
+    }
+
+    #hero, #inicio {
+        background-attachment: scroll;
     }
 }
 
@@ -1256,6 +1267,7 @@ footer {
         clip-path: circle(0px at 90% -10%);
         transition: all 0.5s ease-out;
         pointer-events: none;
+        z-index: 1000;
     }
     
     .nav-links.nav-active {
@@ -1283,13 +1295,22 @@ footer {
         padding-top: 120px;
         height: 100vh;
         background-attachment: scroll;
-        background-position: center;
+        background-position: center 30%;
     }
     
     .about-image {
-        max-height: 300px;
+        max-height: 350px;
         width: 100%;
         margin: 0 auto;
+    }
+    
+    .product-image {
+        height: 280px;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
     }
 }
 
@@ -1309,7 +1330,7 @@ footer {
     #hero, #inicio {
         height: 100vh;
         background-size: cover;
-        background-position: center;
+        background-position: center 40%;
         background-attachment: scroll;
         background-repeat: no-repeat;
     }
@@ -1342,6 +1363,54 @@ footer {
     }
     
     .about-image {
-        max-height: 250px;
+        max-height: 300px;
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .product-image {
+        height: 220px;
+    }
+    
+    img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+    
+    /* Mejora para imágenes adjuntas */
+    .product-card img, .about-image img, .testimonial-author img {
+        object-fit: cover;
+        width: 100%;
+    }
+}
+
+/* Estilos adicionales para imágenes */
+.featured-image {
+    width: 100%;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    margin: 1.5rem 0;
+}
+
+.featured-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+@media screen and (min-width: 768px) {
+    .featured-image {
+        max-width: 80%;
+        margin: 2rem auto;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .featured-image {
+        max-width: 70%;
     }
 } 
