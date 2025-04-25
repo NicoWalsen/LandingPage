@@ -53,6 +53,7 @@
             <ul class="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#productos">Productos</a></li>
+                <li><a href="#b2b">Ventas al Mayor</a></li>
                 <li><a href="#nosotros">Nosotros</a></li>
                 <li><a href="#contacto">Contacto</a></li>
             </ul>
@@ -138,7 +139,7 @@
                 <button class="filter-btn" data-filter="complementos">Complementos</button>
             </div>
             <div class="products-grid">
-                <div class="product-card" data-category="wagyu">
+                <div class="product-card" data-category="wagyu" data-id="wagyu-zabuton">
                     <div class="product-image">
                         <img src="images/Zabuton-MSH.jpg" alt="Zabuton">
                         <div class="product-tag">Premium</div>
@@ -153,7 +154,7 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-category="bbq">
+                <div class="product-card" data-category="bbq" data-id="bbq-pork-burnt-ends">
                     <div class="product-image">
                         <img src="images/Pork Burnt Ends (454 gr)-KingsFord.webp" alt="Pork Burnt Ends">
                     </div>
@@ -167,7 +168,7 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-category="complementos">
+                <div class="product-card" data-category="complementos" data-id="comp-demi-glace">
                     <div class="product-image">
                         <img src="images/Demi Glace.jpg" alt="Demi Glace">
                     </div>
@@ -181,7 +182,7 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-category="bbq">
+                <div class="product-card" data-category="bbq" data-id="bbq-pork-carnitas">
                     <div class="product-image">
                         <img src="images/Pork Carnitas (454 gr)-KingsFord.webp" alt="Pork Carnitas">
                     </div>
@@ -195,7 +196,7 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-category="bbq">
+                <div class="product-card" data-category="bbq" data-id="bbq-pulled-pork">
                     <div class="product-image">
                         <img src="images/Pulled Pork (454 gr)-KingsFord.webp" alt="Pulled Pork">
                     </div>
@@ -209,7 +210,7 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-category="bbq">
+                <div class="product-card" data-category="bbq" data-id="bbq-pulled-chicken">
                     <div class="product-image">
                         <img src="images/Pulled Chicken (454 gr)-KingsFord.webp" alt="Pulled Chicken">
                     </div>
@@ -223,7 +224,7 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-category="choice">
+                <div class="product-card" data-category="choice" data-id="choice-chuck-eye">
                     <div class="product-image">
                         <img src="images/Chuck Eye Roll.jpg" alt="Chuck Eye Roll">
                         <div class="product-tag">High End</div>
@@ -238,7 +239,7 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-category="bbq">
+                <div class="product-card" data-category="bbq" data-id="bbq-costillas-premium">
                     <div class="product-image">
                         <img src="images/Costillas-BRW.webp" alt="Costillas BRW">
                     </div>
@@ -252,7 +253,7 @@
                     </div>
                 </div>
                 
-                <div class="product-card" data-category="choice">
+                <div class="product-card" data-category="choice" data-id="choice-hamburguesas">
                     <div class="product-image">
                         <img src="images/Burguers-BRW.jpg" alt="Burguers BRW">
                     </div>
@@ -264,6 +265,83 @@
                             <button class="add-to-cart"><i class="fas fa-plus"></i></button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="b2b" class="section-padding b2b-section">
+        <div class="container">
+            <h2 class="section-title">Ventas al por Mayor</h2>
+            <div class="b2b-content">
+                <div class="b2b-info">
+                    <h3>Soluciones B2B</h3>
+                    <p>En <strong>BarbiGo</strong> ofrecemos condiciones especiales para compras al por mayor, diseñadas para restaurantes, hoteles, distribuidores y empresas.</p>
+                    <p>Disfruta de los siguientes beneficios al realizar compras al por mayor:</p>
+                    
+                    <div class="b2b-benefits">
+                        <div class="benefit-item">
+                            <i class="fas fa-tag"></i>
+                            <div>
+                                <h4>Precios Especiales</h4>
+                                <p>Descuentos exclusivos para pedidos superiores a 10KG o $250.000 pesos.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <h4>Entregas Programadas</h4>
+                                <p>Coordina entregas periódicas según tus necesidades.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-file-invoice"></i>
+                            <div>
+                                <h4>Facturación</h4>
+                                <p>Emisión de facturas para facilitar tu contabilidad empresarial.</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-box"></i>
+                            <div>
+                                <h4>Productos Personalizados</h4>
+                                <p>Adaptamos nuestros productos a tus especificaciones y necesidades.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#contacto" class="btn-primary">Solicita una Cotización</a>
+                </div>
+                <div class="b2b-form">
+                    <h3>Solicita Información B2B</h3>
+                    <form id="b2b-form">
+                        <div class="form-group">
+                            <input type="text" id="b2b-company" placeholder="Nombre de la Empresa" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="b2b-name" placeholder="Nombre de Contacto" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="b2b-email" placeholder="Email Corporativo" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="b2b-phone" placeholder="Teléfono" required>
+                        </div>
+                        <div class="form-group">
+                            <select id="b2b-type" required>
+                                <option value="" disabled selected>Tipo de Negocio</option>
+                                <option value="restaurante">Restaurante</option>
+                                <option value="hotel">Hotel</option>
+                                <option value="distribuidor">Distribuidor</option>
+                                <option value="catering">Catering</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="b2b-message" placeholder="Detalle tu requerimiento (productos, cantidades, frecuencia)" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Enviar Solicitud</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -429,6 +507,7 @@
                     <ul>
                         <li><a href="#inicio">Inicio</a></li>
                         <li><a href="#productos">Productos</a></li>
+                        <li><a href="#b2b">Ventas al Mayor</a></li>
                         <li><a href="#nosotros">Nosotros</a></li>
                         <li><a href="#contacto">Contacto</a></li>
                     </ul>
